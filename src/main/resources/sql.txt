@@ -1,0 +1,53 @@
+CREATE DATABASE todolist CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE todolist;
+
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE todos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    completed BOOLEAN DEFAULT FALSE,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+-- ユーザーデータの追加
+INSERT INTO users (username, password, email) VALUES
+('testuser1', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'test1@example.com'),
+('testuser2', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'test2@example.com');
+
+-- タスクデータの追加
+INSERT INTO todos (title, description, completed, created_at, updated_at, user_id) VALUES
+('買い物リスト', '牛乳、卵、パンを買う', FALSE, NOW(), NOW(), 1),
+('プロジェクトの進捗', 'ToDoリストアプリの開発を進める', FALSE, NOW(), NOW(), 1),
+('会議の準備', '明日の会議の資料を準備する', TRUE, NOW(), NOW(), 1),
+('運動', 'ジムで30分ランニング', FALSE, NOW(), NOW(), 2),
+('読書', 'Spring Bootの本を読む', FALSE, NOW(), NOW(), 2);
+
+このSQLを実行すると：
+2人のテストユーザーが作成されます：
+testuser1
+testuser2
+パスワードは両方とも "password" です（BCryptでハッシュ化済み）
+5つのタスクが作成されます：
+testuser1に3つのタスク
+testuser2に2つのタスク
+このデータを使用して、アプリケーションの動作をテストできます。ログイン情報は以下の通りです：
+ユーザー1:
+ユーザー名: testuser1
+パスワード: password
+メール: test1@example.com
+ユーザー2:
+ユーザー名: testuser2
+パスワード: password
+メール: test2@example.com
